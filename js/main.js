@@ -1,5 +1,7 @@
-import {hello} from "./test";
+// var board[19][19];
 
 function load_main(){
-  hello();
+  var canvas = document.getElementById("canvas");
+  ContainerWindow.draw(canvas);
+  GomokuBoard.draw(canvas);
 }
