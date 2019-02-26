@@ -1,26 +1,49 @@
-var Drawable = {
-  "width" : 0,
-  "height" : 0,
-  draw:function(target){
-    var ctx = canvas.getContext("2d");
-    ctx.rect(0, 0, width, height);
-    ctx.stroke();
-  }
+function Drawable(x, y, width, height, canvas) {
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.canvas = canvas;
 };
 
-var ContainerWindow = {
-  draw:function(target){
-    var ctx = canvas.getContext("2d");
-    ctx.rect(0, 0, 800, 800);
-    ctx.stroke();
-  }
+Drawable.prototype.draw = function(){
+  console.log(this.x + 'draw');
 };
 
-var GomokuBoard = {
-  draw:function(target){
+function ContainerWindow(x, y, width, height, canvas){
+  Drawable.call(this, x, y, width, height, canvas);
+  this.score_board = new ScoreBoard(this.x + this.width - 200, this.y, 200, this.height, canvas);
+  this.gomoku_board = new GomokuBoard(this.x, this.y, this.width, this.height, canvas);
+
+  this.draw = function(){
+    Drawable.prototype.draw();
+    var ctx = this.canvas.getContext("2d");
+    ctx.rect(this.x, this.y, this.width, this.height);
+    ctx.stroke();
+
+    this.score_board.draw();
+    this.gomoku_board.draw();
+  };
+};
+ContainerWindow.prototype = new Drawable();
+
+function ScoreBoard(x, y, width, height, canvas){
+  Drawable.call(this, x, y, width, height, canvas);
+
+  this.draw = function(){
+    var ctx = this.canvas.getContext("2d");
+    ctx.rect(this.x, this.y, this.width, this.height);
+    ctx.stroke();
+  };
+};
+
+function GomokuBoard(x, y, width, height, canvas) {
+  Drawable.call(this, x, y, width, height, canvas);
+
+  this.draw = function(){
     var ctx = canvas.getContext("2d");
-    var startX = 50, startY = 50;
-    var canvWidth = 700, canvHeight = 700;
+    var startX = this.x + 50, startY = this.y + 50;
+    var canvWidth = this.height - 100, canvHeight = this.height - 100;
 
     var i;
     for ( i = 0; i < 19; i++ ){
@@ -47,7 +70,8 @@ var GomokuBoard = {
       ctx.arc(startX + canvWidth/18 * x, startY + canvHeight/18 * y, 1, 0, 2 * Math.PI);
       ctx.stroke();
     }
-  }
+  };
 };
+
 
 // ContainerWindow.prototype = new Drawable;
