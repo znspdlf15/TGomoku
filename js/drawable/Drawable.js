@@ -21,12 +21,20 @@ Drawable.prototype.addItem = function(item){
   this.items.push(item);
 }
 
+Drawable.prototype.isInside = function(x, y){
+  if ( this.x <= x && x <= this.x + this.width && this.y <= y && y <= this.y + this.height ){
+    return true;
+  } else {
+    return false;
+  }
+}
+
 Drawable.prototype.findItemAtPoint = function(x, y){
   var i;
 
   for ( i = 0; i < this.items.length; i++ ){
     var item = this.items[i];
-    if ( item.x <= x && x <= item.x + item.width && item.y <= y && y <= item.y + item.height ){
+    if ( item.isInside(x, y) ){
       return item.findItemAtPoint(x, y);
     }
   }
@@ -67,8 +75,8 @@ ScoreBoard.prototype = new Drawable();
 
 function GomokuBoard(x, y, width, height, canvas) {
   Drawable.call(this, x, y, width, height, canvas);
-  var startX = this.x + 50, startY = this.y + 50;
-  var canvWidth = this.height - 100, canvHeight = this.height - 100;
+  this.board_x = this.x + 50, this.board_y = this.y + 50;
+  this.board_width = this.width - 100, this.board_height = this.height - 100;
 
   this.draw = function(){
     var ctx = canvas.getContext("2d");
@@ -76,14 +84,14 @@ function GomokuBoard(x, y, width, height, canvas) {
     var i;
     for ( i = 0; i < 19; i++ ){
       ctx.beginPath();
-      ctx.moveTo(startX + canvWidth/18 * i, startY);
-      ctx.lineTo(startX + canvWidth/18 * i, startY + canvHeight);
+      ctx.moveTo(this.board_x + this.board_width/18 * i, this.board_y);
+      ctx.lineTo(this.board_x + this.board_width/18 * i, this.board_y + this.board_height);
       ctx.stroke();
     }
     for ( i = 0; i < 19; i++ ){
       ctx.beginPath();
-      ctx.moveTo(startX, startY + canvHeight/18 * i);
-      ctx.lineTo(startX + canvWidth, startY + canvHeight/18 * i);
+      ctx.moveTo(this.board_x, this.board_y + this.board_height/18 * i);
+      ctx.lineTo(this.board_x + this.board_width, this.board_y + this.board_height/18 * i);
       ctx.stroke();
     }
 
@@ -95,34 +103,57 @@ function GomokuBoard(x, y, width, height, canvas) {
       var x = point[i][0] - 1;
       var y = point[i][1] - 1;
       ctx.beginPath();
-      ctx.arc(startX + canvWidth/18 * x, startY + canvHeight/18 * y, 1, 0, 2 * Math.PI);
+      ctx.arc(this.board_x + this.board_width/18 * x, this.board_y + this.board_height/18 * y, 1, 0, 2 * Math.PI);
       ctx.stroke();
     }
   }
 }
 GomokuBoard.prototype = new Drawable();
 
+GomokuBoard.prototype.board_x;
+GomokuBoard.prototype.board_y;
+GomokuBoard.prototype.board_width;
+GomokuBoard.prototype.board_height;
 GomokuBoard.prototype.onMouseMove = function(x, y){
 
 }
 
 GomokuBoard.prototype.onMouseClick = function(x, y){
   // for test
-  var stone = new Stone(x, y, 50, 50, canvas);
+  var stone = this.findGomokuMapPosition(x, y);
+
+  var stone = new Stone(stone.point.x, stone.point.y, stone.width, stone.height, canvas);
   this.addItem(stone);
   stone.draw();
 }
 
+GomokuBoard.prototype.findGomokuMapPosition = function(x, y){
+  var interval_width = this.board_width / 18;
+  var interval_height = this.board_height / 18;
+
+  var idx_x = parseInt((x + interval_width / 2 - this.board_x ) / interval_width );
+  var idx_y = parseInt((y + interval_height / 2 - this.board_y ) / interval_height );
+  var point_x = this.board_width / 18 * idx_x + this.board_x;
+  var point_y = this.board_height / 18 * idx_y + this.board_y;
+
+  return { idx: {x: idx_x, y: idx_y}, point:{x: point_x, y: point_y}, width: interval_width, height: interval_height };
+}
+
 function Stone(x, y, width, height, canvas, color){
   Drawable.call(this, x, y, width, height, canvas);
+  // 다른 객체와의 호환성을 맞추기 위해서 x, y 조정
+  this.x = x - width/2;
+  this.y = y - height/2;
   this.color = color;
 }
+
 Stone.prototype = new Drawable();
 
 Stone.prototype.draw = function(){
   var ctx = this.canvas.getContext("2d");
 
+  ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.arc(this.x, this.y, this.width/2, 0, 2 * Math.PI);
+  ctx.arc(this.x + this.width/2, this.y + this.height/2, this.width/2, 0, 2 * Math.PI);
   ctx.stroke();
 }
