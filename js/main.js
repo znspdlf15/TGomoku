@@ -7,13 +7,15 @@ var mouse_manager = new function() {
 
   this.onMouseOver = function(event){
     var item = this._container.findItemAtPoint(event.clientX, event.clientY);
+    item.onMouseOver(event.clientX, event.clientY);
   }
   this.onMouseMove = function(event){
     var item = this._container.findItemAtPoint(event.clientX, event.clientY);
-    item.onMouseMove(event);
+    item.onMouseMove(event.clientX, event.clientY);
   }
   this.onMouseClick = function(event){
     var item = this._container.findItemAtPoint(event.clientX, event.clientY);
+    item.onMouseClick(event.clientX, event.clientY);
   }
 }
 

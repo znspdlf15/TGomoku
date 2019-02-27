@@ -11,9 +11,11 @@ Drawable.prototype.items= [];
 
 Drawable.prototype.draw = function(){}
 
-Drawable.prototype.onMouseMove = function(){}
+Drawable.prototype.onMouseMove = function(x, y){}
 
-Drawable.prototype.onMouseClick = function(){}
+Drawable.prototype.onMouseClick = function(x, y){}
+
+Drawable.prototype.onMouseOver = function(x, y){}
 
 Drawable.prototype.addItem = function(item){
   this.items.push(item);
@@ -66,11 +68,10 @@ ScoreBoard.prototype = new Drawable();
 function GomokuBoard(x, y, width, height, canvas) {
   Drawable.call(this, x, y, width, height, canvas);
   var startX = this.x + 50, startY = this.y + 50;
+  var canvWidth = this.height - 100, canvHeight = this.height - 100;
 
   this.draw = function(){
     var ctx = canvas.getContext("2d");
-
-    var canvWidth = this.height - 100, canvHeight = this.height - 100;
 
     var i;
     for ( i = 0; i < 19; i++ ){
@@ -97,18 +98,31 @@ function GomokuBoard(x, y, width, height, canvas) {
       ctx.arc(startX + canvWidth/18 * x, startY + canvHeight/18 * y, 1, 0, 2 * Math.PI);
       ctx.stroke();
     }
-  };
+  }
 }
 GomokuBoard.prototype = new Drawable();
 
-GomokuBoard.prototype.onMouseMove = function(event){
+GomokuBoard.prototype.onMouseMove = function(x, y){
 
 }
 
-GomokuBoard.prototype.onMouseMove = function(event){
-  
+GomokuBoard.prototype.onMouseClick = function(x, y){
+  // for test
+  var stone = new Stone(x, y, 50, 50, canvas);
+  this.addItem(stone);
+  stone.draw();
 }
 
-function Stone(x, y, width, height, canvas){
+function Stone(x, y, width, height, canvas, color){
   Drawable.call(this, x, y, width, height, canvas);
+  this.color = color;
+}
+Stone.prototype = new Drawable();
+
+Stone.prototype.draw = function(){
+  var ctx = this.canvas.getContext("2d");
+
+  ctx.beginPath();
+  ctx.arc(this.x, this.y, this.width/2, 0, 2 * Math.PI);
+  ctx.stroke();
 }
