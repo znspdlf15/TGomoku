@@ -6,16 +6,16 @@ var mouse_manager = new function() {
   }
 
   this.onMouseOver = function(event){
-    var item = this._container.findItemAtPoint(event.clientX, event.clientY);
-    item.onMouseOver(event.clientX, event.clientY);
+    var item = this._container.findItemAtPoint(event.pageX, event.pageY);
+    item.onMouseOver(event.pageX, event.pageY);
   }
   this.onMouseMove = function(event){
-    var item = this._container.findItemAtPoint(event.clientX, event.clientY);
-    item.onMouseMove(event.clientX, event.clientY);
+    var item = this._container.findItemAtPoint(event.pageX, event.pageY);
+    item.onMouseMove(event.pageX, event.pageY);
   }
   this.onMouseClick = function(event){
-    var item = this._container.findItemAtPoint(event.clientX, event.clientY);
-    item.onMouseClick(event.clientX, event.clientY);
+    var item = this._container.findItemAtPoint(event.pageX, event.pageY);
+    item.onMouseClick(event.pageX, event.pageY);
   }
 }
 
