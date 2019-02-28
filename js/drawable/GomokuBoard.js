@@ -1,4 +1,4 @@
-function GomokuBoard(x, y, width, height, canvas, size=19, member_count=4) {
+function GomokuBoard(x, y, width, height, canvas, size=19, member_count=2) {
   Drawable.call(this, x, y, width, height, canvas);
   this.margin = 0.05;
   this.board_x = this.x + this.width * this.margin, this.board_y = this.y + this.height * this.margin;
@@ -58,8 +58,7 @@ GomokuBoard.prototype.nextTurn = function(){
 
 GomokuBoard.prototype.getGomokuBoardState = function(){
   var now_color = this.getNowColor();
-  console.log(now_color);
-  return { color: now_color };
+  return { color: now_color, count: turn_count };
 }
 GomokuBoard.prototype.onMouseMove = function(x, y){
 
