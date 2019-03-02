@@ -20,5 +20,9 @@ function ContainerWindow(x, y, width, height, canvas){
   this.getGomokuBoardState = function(){
     return this.gomoku_board.getGomokuBoardState();
   }
+
+  this.undo = function(){
+    this.gomoku_board.undo();
+  }
 }
 ContainerWindow.prototype = new Drawable();

@@ -38,6 +38,10 @@ function GomokuBoard(x, y, width, height, canvas, size=19, member_count=2) {
       ctx.arc(this.board_x + this.board_width/(this.size-1) * x, this.board_y + this.board_height/(this.size-1) * y, 1, 0, 2 * Math.PI);
       ctx.stroke();
     }
+
+    for ( i = 0; i < this.stones.length; i++ ){
+      this.stones[i].draw();
+    }
   }
 }
 GomokuBoard.prototype = new Drawable();
@@ -47,24 +51,36 @@ GomokuBoard.prototype.board_y;
 GomokuBoard.prototype.board_width;
 GomokuBoard.prototype.board_height;
 GomokuBoard.prototype.size;
-GomokuBoard.prototype.turn_count = 1;
+GomokuBoard.prototype.turn = 1;
+GomokuBoard.prototype.stones = [];
 GomokuBoard.prototype.member_count;
 
 GomokuBoard.prototype.nextTurn = function(){
-  this.turn_count = this.turn_count % this.member_count + 1;
-  var now_color = this.getNowColor();
+  this.turn = this.stones.length % this.member_count + 1;
   this.parent.nextTurn();
+}
+
+GomokuBoard.prototype.undo = function(){
+  var stone = this.stones.pop();
+  var idx = this.items.indexOf(stone);
+  this.items.splice(idx, 1);
+  console.log(this.items.length)
+
+  this.turn = this.stones.length % this.member_count + 1;
+  this.parent.nextTurn();
+
+  this.parent.redraw();
 }
 
 GomokuBoard.prototype.getGomokuBoardState = function(){
   var now_color = this.getNowColor();
-  return { color: now_color, count: turn_count };
+  return { color: now_color, count: this.turn };
 }
 GomokuBoard.prototype.onMouseMove = function(x, y){
 
 }
 GomokuBoard.prototype.getNowColor = function(){
-  return TColor.getColor(this.turn_count);
+  return TColor.getColor(this.turn);
 }
 
 GomokuBoard.prototype.onMouseClick = function(x, y){
@@ -75,8 +91,8 @@ GomokuBoard.prototype.onMouseClick = function(x, y){
 
     this.gomoku_map[stone.idx.y][stone.idx.x] = TColor[now_color];
     var stone = this.makeChild(new Stone(stone.point.x, stone.point.y, stone.width / 5 * 4, stone.height / 5 * 4, canvas, now_color));
+    this.stones.push(stone);
     this.nextTurn();
-    this.addItem(stone);
     stone.draw();
   } else {
 

@@ -5,9 +5,14 @@ function Drawable(x, y, width, height, canvas) {
   this.height = height;
   this.canvas = canvas;
   this.items = [];
-};
+}
 Drawable.prototype.parent;
-Drawable.prototype.items= [];
+Drawable.prototype.x;
+Drawable.prototype.y;
+Drawable.prototype.width;
+Drawable.prototype.height;
+Drawable.prototype.canvas;
+Drawable.prototype.items = [];
 
 Drawable.prototype.draw = function(){}
 
@@ -16,7 +21,6 @@ Drawable.prototype.onMouseMove = function(x, y){}
 Drawable.prototype.onMouseClick = function(x, y){}
 
 Drawable.prototype.onMouseOver = function(x, y){}
-
 
 Drawable.prototype.setParent = function(parent){
   this.parent = parent;
@@ -55,4 +59,11 @@ Drawable.prototype.findItemAtPoint = function(x, y){
   }
 
   return this;
+}
+
+Drawable.prototype.redraw = function(){
+  var ctx = this.canvas.getContext("2d");
+
+  ctx.clearRect(this.x, this.y, this.width, this.height);
+  this.draw();
 }
