@@ -38,6 +38,7 @@ function GomokuBoard(x, y, width, height, canvas, size=19, member_count=2) {
       ctx.arc(this.board_x + this.board_width/(this.size-1) * x, this.board_y + this.board_height/(this.size-1) * y, 1, 0, 2 * Math.PI);
       ctx.stroke();
     }
+    ctx.lineWidth = 1;
 
     for ( i = 0; i < this.stones.length; i++ ){
       this.stones[i].draw();
@@ -61,20 +62,24 @@ GomokuBoard.prototype.nextTurn = function(){
 }
 
 GomokuBoard.prototype.undo = function(){
+  if ( !this.stones.length ) return;
+
   var stone = this.stones.pop();
   var idx = this.items.indexOf(stone);
   this.items.splice(idx, 1);
-  console.log(this.items.length)
 
+  var stone_map = this.findGomokuMapPosition(stone.x, stone.y);
+
+  this.gomoku_map[stone_map.idx.y][stone_map.idx.x] = 0;
   this.turn = this.stones.length % this.member_count + 1;
   this.parent.nextTurn();
 
-  this.parent.redraw();
+  this.redraw();
 }
 
 GomokuBoard.prototype.getGomokuBoardState = function(){
   var now_color = this.getNowColor();
-  return { color: now_color, count: this.turn };
+  return { color: now_color, count: this.stones.length };
 }
 GomokuBoard.prototype.onMouseMove = function(x, y){
 
@@ -89,7 +94,7 @@ GomokuBoard.prototype.onMouseClick = function(x, y){
   if ( this.gomoku_map[stone.idx.y][stone.idx.x] == 0 ){
     var now_color = this.getNowColor();
 
-    this.gomoku_map[stone.idx.y][stone.idx.x] = TColor[now_color];
+    this.gomoku_map[stone.idx.y][stone.idx.x] = now_color;
     var stone = this.makeChild(new Stone(stone.point.x, stone.point.y, stone.width / 5 * 4, stone.height / 5 * 4, canvas, now_color));
     this.stones.push(stone);
     this.nextTurn();

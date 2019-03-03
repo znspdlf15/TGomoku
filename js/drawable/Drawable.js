@@ -36,9 +36,7 @@ Drawable.prototype.makeChild = function(obj){
   return obj;
 }
 
-// Drawable.parototype.init = function(){
-//   this.items.forEach( x => x.init() );
-// }
+Drawable.prototype.init = function(){}
 
 Drawable.prototype.isInside = function(x, y){
   if ( this.x <= x && x <= this.x + this.width && this.y <= y && y <= this.y + this.height ){
