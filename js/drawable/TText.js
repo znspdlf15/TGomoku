@@ -1,13 +1,14 @@
-function TText(x, y, width, height, canvas, text="", font=Constant.font){
+function TText(x, y, width, height, canvas, text="", font=Constant.font, color="black"){
   Drawable.call(this, x, y, width, height, canvas);
   this.text = text;
   this.font = font;
-
+  this.color = color;
 }
 TText.prototype = new Drawable();
 
 TText.prototype.text = "";
 TText.prototype.font;
+TText.prototype.color = "black";
 
 TText.prototype.setText = function(text){
   this.text = text;
@@ -21,5 +22,6 @@ TText.prototype.draw = function(){
   font_size = font_size * this.width / ctx.measureText(this.text).width;
   ctx.font = font_size + "px" + " " + this.font;
   ctx.textBaseline = "top";
+  ctx.fillStyle = this.color;
   ctx.fillText(this.text, this.x, this.y);
 }

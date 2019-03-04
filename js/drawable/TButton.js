@@ -17,14 +17,19 @@ TButton.prototype.setText = function(text){
 
 TButton.prototype.draw = function(){
   var ctx = this.canvas.getContext("2d");
-  ctx.rect(this.x, this.y, this.width, this.height); // need to change fillRect.
+  ctx.rect(this.x, this.y, this.width, this.height);
   ctx.stroke();
 
   var font_size = 10;
 
   ctx.font = font_size + "px" + " " + this.font;
-  font_size = font_size * this.width / ctx.measureText(this.text).width * 4 / 5;
+
+  // standard = 40
+  var text_length = ctx.measureText(this.text).width;
+  var ratio = text_length / 40;
+
+  font_size = font_size * this.width / text_length * 4 / 5 * ratio;
   ctx.font = font_size + "px" + " " + this.font;
   ctx.textBaseline = "top";
-  ctx.fillText(this.text, this.x + this.width * 1 / 10, this.y + this.height * 7 / 20);
+  ctx.fillText(this.text, this.x + this.width * 1 / 10 + this.width * ( 1 - ratio) / 2.5 , this.y + this.height * 7 / 20);
 }

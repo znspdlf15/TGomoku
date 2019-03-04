@@ -12,8 +12,6 @@ function ContainerWindow(x, y, width, height, canvas){
 
     this.gomoku_board.draw();
     this.score_board.draw();
-
-
   }
 
 }
@@ -29,4 +27,8 @@ ContainerWindow.prototype.getGomokuBoardState = function(){
 
 ContainerWindow.prototype.undo = function(){
   this.gomoku_board.undo();
+}
+
+ContainerWindow.prototype.resetBoard = function(){
+  this.gomoku_board.resetBoard();
 }

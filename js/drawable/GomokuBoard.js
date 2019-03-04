@@ -10,6 +10,7 @@ function GomokuBoard(x, y, width, height, canvas, size=19, member_count=2) {
   this.draw = function(){
     var ctx = canvas.getContext("2d");
 
+    // draw gomoku board
     var i;
     for ( i = 0; i < this.size; i++ ){
       ctx.beginPath();
@@ -40,9 +41,8 @@ function GomokuBoard(x, y, width, height, canvas, size=19, member_count=2) {
     }
     ctx.lineWidth = 1;
 
-    for ( i = 0; i < this.stones.length; i++ ){
-      this.stones[i].draw();
-    }
+    // draw gomoku stones
+    this.drawAllItem();
   }
 }
 GomokuBoard.prototype = new Drawable();
@@ -77,13 +77,31 @@ GomokuBoard.prototype.undo = function(){
   this.redraw();
 }
 
+GomokuBoard.prototype.resetBoard = function(){
+  while ( this.stones.length != 0 ){
+    var stone = this.stones.pop();
+    var idx = this.items.indexOf(stone);
+    this.items.splice(idx, 1);
+
+    var stone_map = this.findGomokuMapPosition(stone.x, stone.y);
+    this.gomoku_map[stone_map.idx.y][stone_map.idx.x] = 0;
+  }
+
+  this.turn = 1;
+  this.parent.nextTurn();
+
+  this.redraw();
+}
+
 GomokuBoard.prototype.getGomokuBoardState = function(){
   var now_color = this.getNowColor();
   return { color: now_color, count: this.stones.length };
 }
+
 GomokuBoard.prototype.onMouseMove = function(x, y){
 
 }
+
 GomokuBoard.prototype.getNowColor = function(){
   return TColor.getColor(this.turn);
 }

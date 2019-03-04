@@ -38,6 +38,13 @@ Drawable.prototype.makeChild = function(obj){
 
 Drawable.prototype.init = function(){}
 
+Drawable.prototype.drawAllItem = function(){
+  for ( var i = 0; i < this.items.length; i++ ){
+    this.items[i].draw();
+    this.items[i].drawAllItem();
+  }
+}
+
 Drawable.prototype.isInside = function(x, y){
   if ( this.x <= x && x <= this.x + this.width && this.y <= y && y <= this.y + this.height ){
     return true;
@@ -63,5 +70,6 @@ Drawable.prototype.redraw = function(){
   var ctx = this.canvas.getContext("2d");
 
   ctx.clearRect(this.x, this.y, this.width, this.height);
+  ctx.fillStyle = "black";
   this.draw();
 }
