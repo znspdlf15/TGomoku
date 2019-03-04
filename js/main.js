@@ -1,4 +1,3 @@
-// var board[19][19];
 var mouse_manager = new function() {
   this._container;
   this.setContainer = function(container){

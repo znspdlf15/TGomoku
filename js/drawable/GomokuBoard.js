@@ -106,21 +106,80 @@ GomokuBoard.prototype.getNowColor = function(){
   return TColor.getColor(this.turn);
 }
 
+GomokuBoard.prototype.isValidStone = function(stone){
+  if ( this.gomoku_map[stone.idx.y][stone.idx.x] != 0 ) return false;
+
+  return true;
+}
+
+GomokuBoard.prototype.putStone = function(stone){
+  var now_color = this.getNowColor();
+  var win_flag = false;
+
+  this.gomoku_map[stone.idx.y][stone.idx.x] = now_color;
+  var stone_img = this.makeChild(new Stone(stone.point.x, stone.point.y, stone.width / 5 * 4, stone.height / 5 * 4, canvas, now_color));
+  this.stones.push(stone_img);
+
+  this.nextTurn();
+  stone_img.draw();
+
+  var dx = new Array(8);
+  var dy = new Array(8);
+
+  dx = [0, 1, 1, 1];
+  dy = [1, 1, 0, -1];
+
+  for ( var d = 0; d < 4; d++ ){
+    var count = 1;
+
+    var nextX = stone.idx.x;
+    var nextY = stone.idx.y;
+    while ( true ){
+      var nextX = nextX + dx[d];
+      var nextY = nextY + dy[d];
+
+      if ( !(nextX >= 0 && nextX < this.size && nextY > 0 && nextY < this.size) ) break;
+
+      if ( this.gomoku_map[nextY][nextX] == now_color ) {
+        count++;
+      } else {
+        break;
+      }
+    }
+
+    var nextX = stone.idx.x;
+    var nextY = stone.idx.y;
+    while ( true ){
+      var nextX = nextX - dx[d];
+      var nextY = nextY - dy[d];
+
+      if ( !(nextX >= 0 && nextX < this.size && nextY > 0 && nextY < this.size) ) break;
+
+      if ( this.gomoku_map[nextY][nextX] == now_color ) {
+        count++;
+      } else {
+        break;
+      }
+    }
+
+    if ( count == 5 ){
+      win_flag = true;
+    }
+  }
+
+  if ( win_flag ){
+    if ( confirm(now_color + "가 승리했습니다! 리셋하시겠습니까?") ){
+      this.resetBoard();
+    }
+  }
+}
+
 GomokuBoard.prototype.onMouseClick = function(x, y){
   var stone = this.findGomokuMapPosition(x, y);
 
-  if ( this.gomoku_map[stone.idx.y][stone.idx.x] == 0 ){
-    var now_color = this.getNowColor();
-
-    this.gomoku_map[stone.idx.y][stone.idx.x] = now_color;
-    var stone = this.makeChild(new Stone(stone.point.x, stone.point.y, stone.width / 5 * 4, stone.height / 5 * 4, canvas, now_color));
-    this.stones.push(stone);
-    this.nextTurn();
-    stone.draw();
-  } else {
-
+  if ( this.isValidStone(stone) ){
+    this.putStone(stone);
   }
-
 }
 
 GomokuBoard.prototype.findGomokuMapPosition = function(x, y){
