@@ -41,7 +41,6 @@ Drawable.prototype.init = function(){}
 Drawable.prototype.drawAllItem = function(){
   for ( var i = 0; i < this.items.length; i++ ){
     this.items[i].draw();
-    this.items[i].drawAllItem();
   }
 }
 

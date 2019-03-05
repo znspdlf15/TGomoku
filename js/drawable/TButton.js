@@ -28,8 +28,13 @@ TButton.prototype.draw = function(){
   var text_length = ctx.measureText(this.text).width;
   var ratio = text_length / 40;
 
-  font_size = font_size * this.width / text_length * 4 / 5 * ratio;
+  font_size = font_size * this.width / text_length * 4 / 5;
+  if ( ratio < 1 ){
+    font_size = font_size * ratio;
+  } else {
+    ratio = 1;
+  }
   ctx.font = font_size + "px" + " " + this.font;
   ctx.textBaseline = "top";
-  ctx.fillText(this.text, this.x + this.width * 1 / 10 + this.width * ( 1 - ratio) / 2.5 , this.y + this.height * 7 / 20);
+  ctx.fillText(this.text, this.x + this.width * 1 / 10 + this.width * ( 1 - ratio ) / 3, this.y + this.height * 7 / 20);
 }
