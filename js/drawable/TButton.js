@@ -17,8 +17,7 @@ TButton.prototype.setText = function(text){
 
 TButton.prototype.draw = function(){
   var ctx = this.canvas.getContext("2d");
-  ctx.rect(this.x, this.y, this.width, this.height);
-  ctx.stroke();
+  ctx.strokeRect(this.x, this.y, this.width, this.height);
 
   var font_size = 10;
 

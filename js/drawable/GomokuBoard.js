@@ -6,6 +6,7 @@ function GomokuBoard(x, y, width, height, canvas, size=19, member_count=2) {
   this.size = size;
   this.member_count = member_count;
   this.gomoku_map = new Array(this.size).fill(0).map(x => new Array(this.size).fill(0));
+  this.stones = [];
 
   this.draw = function(){
     var ctx = canvas.getContext("2d");
@@ -138,7 +139,7 @@ GomokuBoard.prototype.putStone = function(stone){
       var nextX = nextX + dx[d];
       var nextY = nextY + dy[d];
 
-      if ( !(nextX >= 0 && nextX < this.size && nextY > 0 && nextY < this.size) ) break;
+      if ( !(nextX >= 0 && nextX < this.size && nextY >= 0 && nextY < this.size) ) break;
 
       if ( this.gomoku_map[nextY][nextX] == now_color ) {
         count++;
@@ -153,7 +154,7 @@ GomokuBoard.prototype.putStone = function(stone){
       var nextX = nextX - dx[d];
       var nextY = nextY - dy[d];
 
-      if ( !(nextX >= 0 && nextX < this.size && nextY > 0 && nextY < this.size) ) break;
+      if ( !(nextX >= 0 && nextX < this.size && nextY >= 0 && nextY < this.size) ) break;
 
       if ( this.gomoku_map[nextY][nextX] == now_color ) {
         count++;
@@ -168,7 +169,7 @@ GomokuBoard.prototype.putStone = function(stone){
   }
 
   if ( win_flag ){
-    if ( confirm(now_color + "가 승리했습니다! 리셋하시겠습니까?") ){
+    if ( confirm(now_color + "(이)가 승리했습니다! 리셋하시겠습니까?") ){
       this.resetBoard();
     }
   }

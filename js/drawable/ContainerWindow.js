@@ -5,8 +5,7 @@ function ContainerWindow(x, y, width, height, canvas){
   this.draw = function(){
     Drawable.prototype.draw.call(this);
     var ctx = this.canvas.getContext("2d");
-    ctx.rect(this.x, this.y, this.width, this.height);
-    // ctx.stroke();
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
 
     this.drawAllItem();
   }
@@ -33,13 +32,25 @@ ContainerWindow.prototype.resetBoard = function(){
   this.gomoku_board.resetBoard();
 }
 
-ContainerWindow.prototype.startGame = function(){
+ContainerWindow.prototype.startGame = function(players){
   this.gomoku_board = this.makeChild(new GomokuBoard(this.x, this.y, this.width - 200, this.height, canvas));
   this.score_board = this.makeChild(new ScoreBoard(this.x + this.width - 200, this.y, 200, this.height, canvas));
   this.score_board.init();
 
   this.items.splice(this.init_board, 1);
 
+  this.drawAllItem();
+  this.redraw();
+}
+
+ContainerWindow.prototype.home = function(){
+  this.init_board = this.makeChild(new InitBoard(this.x, this.y, this.width, this.height, canvas));
+
+  this.items.splice(this.gomoku_board, 1);
+  this.items.splice(this.score_board, 1);
+
+  this.drawAllItem();
+  this.redraw();
   this.drawAllItem();
   this.redraw();
 }
