@@ -39,7 +39,6 @@ ContainerWindow.prototype.startGame = function(players){
 
   this.items.splice(this.init_board, 1);
 
-  this.drawAllItem();
   this.redraw();
 }
 
@@ -49,8 +48,5 @@ ContainerWindow.prototype.home = function(){
   this.items.splice(this.gomoku_board, 1);
   this.items.splice(this.score_board, 1);
 
-  this.drawAllItem();
-  this.redraw();
-  this.drawAllItem();
   this.redraw();
 }
