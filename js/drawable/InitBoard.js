@@ -7,27 +7,30 @@ function InitBoard(x, y, width, height, canvas){
   this.human_game_button = this.makeChild(new TButton(this.x + this.width * 5 / 12, this.y + this.height * 5 / 16, this.width/6, this.width/12, canvas));
   this.human_game_button.setText("2인대전");
   this.human_game_button.onMouseClick = function(x, y){
-    var players = new Array(2);
+    var players = [];
     players.push(new HumanPlayer());
     players.push(new HumanPlayer());
+    arrayShuffle(players);
     this.parent.startGame(players);
   }
 
   this.computer_game_button = this.makeChild(new TButton(this.x + this.width * 5 / 12, this.y + this.height * 7 / 16, this.width/6, this.width/12, canvas));
   this.computer_game_button.setText("Computer.Ver1");
   this.computer_game_button.onMouseClick = function(x, y){
-    var players = new Array(2);
+    var players = [];
     players.push(new HumanPlayer());
-    players.push(new HumanPlayer());
+    players.push(new Algorithm1());
+    arrayShuffle(players);
     this.parent.startGame(players);
   }
 
   this.computer_game_button2 = this.makeChild(new TButton(this.x + this.width * 5 / 12, this.y + this.height * 9 / 16, this.width/6, this.width/12, canvas));
   this.computer_game_button2.setText("Computer.Ver2");
   this.computer_game_button2.onMouseClick = function(x, y){
-    var players = new Array(2);
+    var players = [];
     players.push(new HumanPlayer());
-    players.push(new HumanPlayer());
+    players.push(new Algorithm2());
+    arrayShuffle(players);
     this.parent.startGame(players);
   }
 
