@@ -14,6 +14,10 @@ TText.prototype.setText = function(text){
   this.text = text;
 }
 
+TText.prototype.setColor = function(color){
+  this.color = color;
+}
+
 TText.prototype.draw = function(){
   var ctx = this.canvas.getContext("2d");
   var font_size = 10;

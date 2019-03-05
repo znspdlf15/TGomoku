@@ -44,6 +44,11 @@ function GomokuBoard(x, y, width, height, canvas, size=19, member_count=2) {
 
     // draw gomoku stones
     this.drawAllItem();
+
+    // If AI has first turn.
+    if ( this.players[this.turn-1] instanceof AIPlayer ){
+      this.turnToAI(this.players[this.turn-1]);
+    }
   }
 }
 GomokuBoard.prototype = new Drawable();
@@ -56,6 +61,7 @@ GomokuBoard.prototype.size;
 GomokuBoard.prototype.turn = 1;
 GomokuBoard.prototype.stones = [];
 GomokuBoard.prototype.member_count;
+GomokuBoard.prototype.players;
 
 GomokuBoard.prototype.nextTurn = function(){
   this.turn = this.stones.length % this.member_count + 1;
@@ -172,10 +178,23 @@ GomokuBoard.prototype.putStone = function(stone){
     if ( confirm(now_color + "(이)가 승리했습니다! 리셋하시겠습니까?") ){
       this.resetBoard();
     }
+  } else {
+    if ( this.players[this.turn-1] instanceof AIPlayer ){
+      this.turnToAI(this.players[this.turn-1]);
+    }
   }
 }
 
+GomokuBoard.prototype.setPlayers = function(players){
+  this.players = players;
+}
+
 GomokuBoard.prototype.onMouseClick = function(x, y){
+  if ( this.players[this.turn-1] instanceof AIPlayer ){
+    alert('당신의 차례가 아닙니다.');
+    return;
+  }
+
   var stone = this.findGomokuMapPosition(x, y);
 
   if ( this.isValidStone(stone) ){
@@ -193,4 +212,11 @@ GomokuBoard.prototype.findGomokuMapPosition = function(x, y){
   var point_y = this.board_height / (this.size-1) * idx_y + this.board_y;
 
   return { idx: {x: idx_x, y: idx_y}, point:{x: point_x, y: point_y}, width: interval_width, height: interval_height };
+}
+
+GomokuBoard.prototype.turnToAI = function(player){
+  this.parent.setComputerThinking(true);
+
+  player.turnToAI(this);
+  // this.parent.computerThinking(false);
 }

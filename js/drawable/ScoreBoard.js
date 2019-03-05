@@ -50,6 +50,7 @@ function ScoreBoard(x, y, width, height, canvas){
   }
 }
 ScoreBoard.prototype = new Drawable();
+ScoreBoard.prototype.thinking_text;
 
 ScoreBoard.prototype.nextTurn = function(){
   var idx = this.items.indexOf(this.now_stone);
@@ -74,5 +75,18 @@ ScoreBoard.prototype.resetBoard = function(){
 ScoreBoard.prototype.home = function(){
   if ( confirm("홈 화면으로 돌아가시겠습니까?") ){
     this.parent.home();
+  }
+}
+
+ScoreBoard.prototype.setComputerThinking = function( thinking ){
+  if ( thinking == true ){
+    this.thinking_text = this.makeChild(new TText(this.x + this.width * 1 / 4, this.y + this.height * 6 / 16, this.width/2, 0, canvas));
+    this.thinking_text.setText("컴퓨터가 생각중입니다...");
+    this.thinking_text.setColor("red");
+    this.thinking_text.draw();
+  } else {
+    this.items.splice(this.thinking_text, 1);
+
+    this.redraw();
   }
 }

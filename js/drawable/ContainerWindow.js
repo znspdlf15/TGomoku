@@ -37,6 +37,7 @@ ContainerWindow.prototype.startGame = function(players){
   this.score_board = this.makeChild(new ScoreBoard(this.x + this.width - 200, this.y, 200, this.height, canvas));
   this.score_board.init();
 
+  this.gomoku_board.setPlayers(players);
   this.items.splice(this.init_board, 1);
 
   this.redraw();
@@ -49,4 +50,8 @@ ContainerWindow.prototype.home = function(){
   this.items.splice(this.score_board, 1);
 
   this.redraw();
+}
+
+ContainerWindow.prototype.setComputerThinking = function(real){
+  this.score_board.setComputerThinking(real);
 }
