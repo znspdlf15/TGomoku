@@ -71,7 +71,7 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
       var y = e.data.y;
       if ( gomoku_board.isValidStone(x, y) ) {
         var stone = gomoku_board.getGomokuStone(x, y);
-        gomoku_board.putStone(x, y);
+        gomoku_board.putStone(stone);
         stopWorker();
       } else {
         this.worker.postMessage(gomoku_board.gomoku_map);
