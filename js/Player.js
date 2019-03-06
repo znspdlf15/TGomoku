@@ -27,16 +27,6 @@ HumanPlayer.prototype = new Player();
 //      }
 //    }
 //
-// worker 중지
-function stopWorker() {
-
-  if ( worker ) {
-    worker.terminate();
-    worker = null;
-  }
-
-}
-
 
 function AIPlayer(color){
   Player.call(this, color);
@@ -48,6 +38,12 @@ AIPlayer.prototype.turnToAI = function(gomoku_board){
   console.log("now AI's turn");
 }
 
+AIPlayer.prototype.stopWorker = function(){
+  if ( this.worker ) {
+    this.worker.terminate();
+    this.worker = null;
+  }
+}
 
 
 function Algorithm1(color){
@@ -72,7 +68,7 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
       if ( gomoku_board.isValidStone(x, y) ) {
         var stone = gomoku_board.getGomokuStone(x, y);
         gomoku_board.putStone(stone);
-        stopWorker();
+        this.stopWorker();
       } else {
         this.worker.postMessage(gomoku_board.gomoku_map);
       }
