@@ -5,8 +5,8 @@ self.onmessage = function( e ) {
 };
 
 function loop() {
-  var x = Math.random() * 19;
-  var y = Math.random() * 19;
+  var x = parseInt(Math.random() * 19);
+  var y = parseInt(Math.random() * 19);
 
   self.postMessage( { x: x, y: y } );
 }
