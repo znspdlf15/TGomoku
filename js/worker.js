@@ -1,12 +1,14 @@
 var i = 0;
 
 self.onmessage = function( e ) {
-    loop();
+    postAnswer();
 };
 
-function loop() {
+function postAnswer() {
   var x = parseInt(Math.random() * 19);
   var y = parseInt(Math.random() * 19);
 
-  self.postMessage( { x: x, y: y } );
+  setTimeout( function() {
+      self.postMessage( { x: x, y: y } );
+  }, 1000 );
 }

@@ -70,6 +70,9 @@ GomokuBoard.prototype.nextTurn = function(){
 
 GomokuBoard.prototype.undo = function(){
   if ( !this.stones.length ) return;
+  if ( this.players[this.turn-1] instanceof AIPlayer ) {
+    this.alertUndo(this.players[this.turn-1]);
+  }
 
   var stone = this.stones.pop();
   var idx = this.items.indexOf(stone);
@@ -78,10 +81,14 @@ GomokuBoard.prototype.undo = function(){
   var stone_map = this.findGomokuMapPosition(stone.x, stone.y);
 
   this.gomoku_map[stone_map.idx.y][stone_map.idx.x] = 0;
-  this.turn = this.stones.length % this.member_count + 1;
-  this.parent.nextTurn();
+
+  this.nextTurn();
 
   this.redraw();
+
+  if ( this.players[this.turn-1] instanceof AIPlayer ){
+    this.turnToAI(this.players[this.turn-1]);
+  }
 }
 
 GomokuBoard.prototype.resetBoard = function(){
@@ -129,6 +136,7 @@ GomokuBoard.prototype.putStone = function(stone){
 
   this.nextTurn();
   stone_img.draw();
+  this.parent.setComputerThinking(false);
 
   var dx = new Array(8);
   var dy = new Array(8);
@@ -228,5 +236,10 @@ GomokuBoard.prototype.turnToAI = function(player){
   this.parent.setComputerThinking(true);
 
   player.turnToAI(this);
+  // this.parent.computerThinking(false);
+}
+
+GomokuBoard.prototype.alertUndo = function(player){
+  player.alertUndo();
   // this.parent.computerThinking(false);
 }
