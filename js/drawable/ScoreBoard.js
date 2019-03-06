@@ -85,7 +85,7 @@ ScoreBoard.prototype.setComputerThinking = function( thinking ){
     this.thinking_text.setColor("red");
     this.thinking_text.draw();
   } else {
-    if ( !thinking_text ) return;
+    if ( !this.thinking_text ) return;
     this.items.splice(this.thinking_text, 1);
     this.thinking_text = undefined;
 
