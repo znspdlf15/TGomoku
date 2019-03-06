@@ -32,16 +32,17 @@ function AIPlayer(color){
   Player.call(this, color);
 }
 AIPlayer.prototype = new Player();
-AIPlayer.prototype.worker;
 
 AIPlayer.prototype.turnToAI = function(gomoku_board){
   console.log("now AI's turn");
 }
 
-AIPlayer.prototype.stopWorker = function(){
-  if ( this.worker ) {
-    this.worker.terminate();
-    this.worker = null;
+var worker;
+
+function stopWorker(){
+  if ( worker ) {
+    worker.terminate();
+    worker = null;
   }
 }
 
@@ -55,22 +56,22 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
   AIPlayer.prototype.turnToAI.call(this, gomoku_board);
 
   if ( !!window.Worker ) {
-    if ( this.worker ) {
+    if ( worker ) {
       stopWorker();
     }
 
-    this.worker = new Worker('./js/worker.js');
-    this.worker.postMessage(gomoku_board.gomoku_map);
+    worker = new Worker('./js/worker.js');
+    worker.postMessage(gomoku_board.gomoku_map);
 
-    this.worker.onmessage = function( e ) {
+    worker.onmessage = function( e ) {
       var x = e.data.x;
       var y = e.data.y;
       if ( gomoku_board.isValidStone(x, y) ) {
         var stone = gomoku_board.getGomokuStone(x, y);
         gomoku_board.putStone(stone);
-        this.stopWorker();
+        stopWorker();
       } else {
-        this.worker.postMessage(gomoku_board.gomoku_map);
+        worker.postMessage(gomoku_board.gomoku_map);
       }
     }
   }
