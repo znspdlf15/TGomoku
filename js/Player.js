@@ -27,15 +27,15 @@ HumanPlayer.prototype = new Player();
 //      }
 //    }
 //
-//    // worker 중지
-//     function stopWorker() {
-//
-//       if ( worker ) {
-//         worker.terminate();
-//         worker = null;
-//       }
-//
-//     }
+// worker 중지
+function stopWorker() {
+
+  if ( worker ) {
+    worker.terminate();
+    worker = null;
+  }
+
+}
 
 
 function AIPlayer(color){
@@ -64,11 +64,18 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
     }
 
     this.worker = new Worker('./js/worker.js');
-    this.worker.postMessage('gomoku_board');    // 워커에 메시지를 보낸다.
+    this.worker.postMessage(gomoku_board);
 
     this.worker.onmessage = function( e ) {
-      console.log('호출 페이지 - ', e.data );
-      output.innerHTML += e.data;
+      var x = e.data.x;
+      var y = e.data.y;
+      if ( gomoku_board.isValidStone(x, y) ) {
+        var stone = gomoku_board.getGomokuStone(x, y);
+        gomoku_board.putStone(x, y);
+        stopWorker();
+      } else {
+        this.worker.postMessage(gomoku_board);
+      }
     }
   }
 

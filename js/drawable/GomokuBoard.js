@@ -113,8 +113,8 @@ GomokuBoard.prototype.getNowColor = function(){
   return TColor.getColor(this.turn);
 }
 
-GomokuBoard.prototype.isValidStone = function(stone){
-  if ( this.gomoku_map[stone.idx.y][stone.idx.x] != 0 ) return false;
+GomokuBoard.prototype.isValidStone = function(x, y){
+  if ( this.gomoku_map[y][x] != 0 ) return false;
 
   return true;
 }
@@ -197,9 +197,19 @@ GomokuBoard.prototype.onMouseClick = function(x, y){
 
   var stone = this.findGomokuMapPosition(x, y);
 
-  if ( this.isValidStone(stone) ){
+  if ( this.isValidStone(stone.idx.x, stone.idx.y) ){
     this.putStone(stone);
   }
+}
+
+GomokuBoard.prototype.getGomokuStone = function(x, y){
+  var interval_width = this.board_width / (this.size-1);
+  var interval_height = this.board_height / (this.size-1);
+
+  var point_x = this.board_width / (this.size-1) * x + this.board_x;
+  var point_y = this.board_height / (this.size-1) * y + this.board_y;
+
+  return { idx: {x: x, y: y}, point:{x: point_x, y: point_y}, width: interval_width, height: interval_height };
 }
 
 GomokuBoard.prototype.findGomokuMapPosition = function(x, y){

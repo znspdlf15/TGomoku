@@ -5,11 +5,8 @@ self.onmessage = function( e ) {
 };
 
 function loop() {
+  var x = Math.random() * 19;
+  var y = Math.random() * 19;
 
-  postMessage( ++i );
-
-  setTimeout( function() {
-      loop();
-  }, 1000 );
-
+  return { x: x, y: y };
 }
