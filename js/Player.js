@@ -1,7 +1,8 @@
 function Player(color){
   this.color = color;
+  this.isBlocked = false;
 }
-Player.prototype.isBlocked = false;
+Player.prototype.isBlocked;
 Player.prototype.alertUndo = function(){
   this.isBlocked = true;
 }
@@ -50,7 +51,7 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
         this.isBlocked = false;
         return;
       }
-      
+
       var x = e.data.x;
       var y = e.data.y;
 

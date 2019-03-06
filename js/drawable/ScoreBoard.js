@@ -88,7 +88,7 @@ ScoreBoard.prototype.setComputerThinking = function( thinking ){
     this.items.splice(this.thinking_text, 1);
 
     var ctx = this.canvas.getContext("2d");
-    ctx.clearRect(this.x + this.width * 1 / 4, this.y + this.height * 6 / 16, this.width/2, 0, canvas);
+    ctx.clearRect(this.x + this.width * 1 / 4, this.y + this.height * 6 / 16, this.width/2, this.width/6, canvas);
     ctx.fillStyle = 'black';
   }
 }
