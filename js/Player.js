@@ -64,7 +64,7 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
     }
 
     this.worker = new Worker('./js/worker.js');
-    this.worker.postMessage(gomoku_board);
+    this.worker.postMessage(gomoku_board.gomoku_map);
 
     this.worker.onmessage = function( e ) {
       var x = e.data.x;
@@ -74,7 +74,7 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
         gomoku_board.putStone(x, y);
         stopWorker();
       } else {
-        this.worker.postMessage(gomoku_board);
+        this.worker.postMessage(gomoku_board.gomoku_map);
       }
     }
   }
