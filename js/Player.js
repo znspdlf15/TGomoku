@@ -63,7 +63,7 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
       stopWorker();
     }
 
-    this.worker = new Worker('./worker.js');
+    this.worker = new Worker('./js/worker.js');
     this.worker.postMessage('gomoku_board');    // 워커에 메시지를 보낸다.
 
     this.worker.onmessage = function( e ) {
