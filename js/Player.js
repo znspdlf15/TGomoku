@@ -46,8 +46,11 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
     worker.postMessage(gomoku_board.gomoku_map);
 
     this.isBlocked = false;
+
+    var obj = this;
+
     var putStone = function(x, y){
-      if ( this.isBlocked ) return;
+      if ( obj.isBlocked ) return;
 
       if ( gomoku_board.isValidStone(x, y) ) {
         var stone = gomoku_board.getGomokuStone(x, y);

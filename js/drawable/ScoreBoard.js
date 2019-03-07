@@ -80,6 +80,7 @@ ScoreBoard.prototype.home = function(){
 
 ScoreBoard.prototype.setComputerThinking = function( thinking ){
   if ( thinking == true ){
+    if ( this.thinking_text ) return;
     this.thinking_text = this.makeChild(new TText(this.x + this.width * 1 / 4, this.y + this.height * 6 / 16, this.width/2, 0, canvas));
     this.thinking_text.setText("컴퓨터가 생각중입니다...");
     this.thinking_text.setColor("red");
