@@ -50,8 +50,10 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
     var obj = this;
 
     var putStone = function(x, y){
-      if ( obj.isBlocked ) return;
-
+      if ( obj.isBlocked ) {
+        gomoku_board.parent.setComputerThinking(false);
+        return;
+      }
       if ( gomoku_board.isValidStone(x, y) ) {
         var stone = gomoku_board.getGomokuStone(x, y);
         gomoku_board.putStone(stone);
