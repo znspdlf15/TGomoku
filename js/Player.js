@@ -1,5 +1,4 @@
-function Player(color){
-  this.color = color;
+function Player(){
   this.isBlocked = false;
 }
 Player.prototype.isBlocked;
@@ -7,8 +6,8 @@ Player.prototype.alertUndo = function(){
   this.isBlocked = true;
 }
 
-function HumanPlayer(color){
-  Player.call(this, color);
+function HumanPlayer(){
+  Player.call(this);
 }
 HumanPlayer.prototype = new Player();
 
@@ -21,8 +20,8 @@ function stopWorker(){
   }
 }
 
-function AIPlayer(color){
-  Player.call(this, color);
+function AIPlayer(){
+  Player.call(this);
 }
 AIPlayer.prototype = new Player();
 
@@ -30,8 +29,8 @@ AIPlayer.prototype.turnToAI = function(gomoku_board){
   console.log("now AI's turn");
 }
 
-function Algorithm1(color){
-  AIPlayer.call(this, color);
+function Algorithm1(){
+  AIPlayer.call(this);
 }
 Algorithm1.prototype = new AIPlayer();
 
@@ -46,14 +45,9 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
     worker = new Worker('./js/worker.js');
     worker.postMessage(gomoku_board.gomoku_map);
 
-    worker.onmessage = function( e ) {
-      if ( this.isBlocked ){
-        this.isBlocked = false;
-        return;
-      }
-
-      var x = e.data.x;
-      var y = e.data.y;
+    this.isBlocked = false;
+    var putStone = function(x, y){
+      if ( this.isBlocked ) return;
 
       if ( gomoku_board.isValidStone(x, y) ) {
         var stone = gomoku_board.getGomokuStone(x, y);
@@ -63,12 +57,24 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
         worker.postMessage(gomoku_board.gomoku_map);
       }
     }
+
+    worker.onmessage = function( e ) {
+      if ( blocked ){
+        this.isBlocked = false;
+        return;
+      }
+
+      var x = e.data.x;
+      var y = e.data.y;
+
+      putStone(x, y);
+    }
   }
 
 }
 
-function Algorithm2(color){
-  AIPlayer.call(this, color);
+function Algorithm2(){
+  AIPlayer.call(this);
 }
 Algorithm2.prototype = new AIPlayer();
 
