@@ -59,11 +59,6 @@ Algorithm1.prototype.turnToAI = function(gomoku_board){
     }
 
     worker.onmessage = function( e ) {
-      if ( blocked ){
-        this.isBlocked = false;
-        return;
-      }
-
       var x = e.data.x;
       var y = e.data.y;
 
